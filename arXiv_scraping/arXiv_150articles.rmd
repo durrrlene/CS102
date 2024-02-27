@@ -93,7 +93,7 @@ end - start # Total Elapsed Time
 save(papers, file = "ComputerScience_articles.RData")
 write.xlsx(papers, "ComputerScience_articles.xlsx")
 write.csv(papers, file = "ComputerScience_articles.csv")
-
+read.csv("ComputerScience_articles.csv")
 ```
 
 

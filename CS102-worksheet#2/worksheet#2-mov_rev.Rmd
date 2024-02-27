@@ -1,0 +1,157 @@
+---
+title: "worksheet#2[mov_rev]-LAPSO"
+author: "Darlene Erl Lapso"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r a}
+library(xml2)
+library(httr)
+library(rvest)
+library(purrr)
+library(stringr)
+library(dplyr)
+library(polite)
+```
+
+```{r}
+url <- 'https://www.imdb.com/title/tt0817177/reviews?ref_=tt_urv'
+
+```
+
+
+
+```{r}
+session <- bow(url,
+               user_agent = "Educational")
+session
+
+```
+
+
+
+```{r}
+scrape_reviews <- function(url) {
+  HTML_movie <- read_html(url)
+  
+  # USERNAME
+  HTML_movie %>%
+    html_nodes('.display-name-link') %>%
+    html_text() -> username
+  
+  # TITLE
+  HTML_movie %>%
+    html_nodes('.title') %>%
+    html_text() -> title
+  
+  # CONTENT OF REVIEW
+  HTML_movie %>%
+    html_nodes('.content') %>%
+    html_text() -> content
+  
+  # STARS
+  HTML_movie %>%
+    html_nodes('.rating-other-user-rating') %>%
+    html_text() -> stars
+  
+  # DATE
+  HTML_movie %>%
+    html_nodes('.review-date') %>%
+    html_text() -> date
+  
+  min_length_rev <- min(length(username), length(title), length(content), length(stars), length(date))
+  
+  all_rev <- data.frame(
+    Username = username[1:min_length_rev],
+    Title = title[1:min_length_rev],
+    Content = content[1:min_length_rev],
+    Stars = stars[1:min_length_rev],
+    Date = date[1:min_length_rev],
+    stringsAsFactors = FALSE
+  )
+  
+  return(all_rev)
+}
+```
+
+
+```{r}
+base_url <- 'https://www.imdb.com/title/tt0817177/reviews?ref_=tt_urv&page='
+```
+
+
+```{r}
+target_reviews <- 300
+```
+
+
+```{r}
+all_reviews <- data.frame()
+```
+
+
+
+```{r}
+page <- 1
+while (nrow(all_reviews) < target_reviews) {
+  url <- paste0(base_url, page)
+  reviews_on_page <- scrape_reviews(url)
+  all_reviews <- bind_rows(all_reviews, reviews_on_page)
+  page <- page + 1
+}
+```
+
+
+```{r}
+all_reviews <- all_reviews[1:target_reviews, ]
+```
+
+
+
+```{r}
+cat("Number of scraped reviews: ", nrow(all_reviews), "\n")
+View(all_reviews)
+```
+
+
+
+# ########################## Metascore ########################
+```{r}
+metascore_url <- 'https://www.imdb.com/title/tt0817177/?ref_=nv_sr_srsg_0_tt_8_nm_0_q_flipped'
+HTML_score <- read_html(metascore_url)
+metascore <- HTML_score %>%
+  html_nodes('.score') %>%
+  html_text() %>%
+  as.numeric()
+```
+
+
+
+```{r}
+metascore_df <- data.frame(Metascore = metascore)
+```
+
+
+```{r}
+combined_data <- bind_rows(metascore_df, all_reviews)
+
+```
+
+```{r}
+write.csv(combined_data, "combined_data.csv", row.names = FALSE)
+```
+
+```{r}
+View(combined_data)
+```

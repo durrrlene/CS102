@@ -1,0 +1,64 @@
+---
+title: "MergedReviews.rmd"
+author: "Darlene Erl Lapso"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+library(xlsx)
+```
+
+
+```{r}
+mov1 <- read.csv("/cloud/project/CS102-worksheet#2/FLIPPED.csv")
+mov2 <- read.csv("/cloud/project/CS102-worksheet#2/TOYSTORY.csv")
+mov3 <- read.csv("/cloud/project/CS102-worksheet#2/UP.csv")
+mov4 <- read.csv("/cloud/project/CS102-worksheet#2/TOTORO.csv")
+mov5 <- read.csv("/cloud/project/CS102-worksheet#2/RATATOUILLE.csv")
+mov6 <- read.csv("/cloud/project/CS102-worksheet#2/GRAVE_OF_FIREFLIES.csv")
+mov7 <- read.csv("/cloud/project/CS102-worksheet#2/TANGLED.csv")
+mov8 <- read.csv("/cloud/project/CS102-worksheet#2/INSIDEOUT.csv")
+mov9 <- read.csv("/cloud/project/CS102-worksheet#2/SPIRITEDAWAY.csv")
+mov10 <- read.csv("/cloud/project/CS102-worksheet#2/PRINCESSMONONOKE.csv")
+```
+
+```{r}
+movies1_2 <- rbind(mov1, mov2)
+movies3_4 <- rbind(mov3, mov4)
+movies5_6 <- rbind(mov5, mov6)
+movies7_8 <- rbind(mov7, mov8)
+movies9_10 <- rbind(mov9, mov10)
+```
+
+```{r}
+#MOVIES 1 AND 2
+write.csv(movies1_2, "movies1_2.csv", row.names = FALSE)
+write.xlsx(movies1_2, "movies1_2.xlsx", row.names = FALSE)
+
+#MOVIES 3 AND 4
+write.csv(movies3_4, "movies3_4.csv", row.names = FALSE)
+write.xlsx(movies3_4, "movies3_4.xlsx", row.names = FALSE)
+
+#MOVIES 5 AND 6
+write.csv(movies5_6, "movies5_6.csv", row.names = FALSE)
+write.xlsx(movies5_6, "movies5_6.xlsx", row.names = FALSE)
+
+#MOVIES 7 AND 8
+write.csv(movies7_8, "movies7_8.csv", row.names = FALSE)
+write.xlsx(movies7_8, "movies7_8.xlsx", row.names = FALSE)
+
+#MOVIES 9 AND 10
+write.csv(movies9_10, "movies9_10.csv", row.names = FALSE)
+write.xlsx(movies9_10, "movies9_10.xlsx", row.names = FALSE)
+
+```
+
+```{r}
+allmovrev <- rbind(movies1_2, movies3_4, movies5_6, movies7_8, movies9_10)
+```
+
+```{r}
+write.csv(allmovrev, "3000MergedReviews.csv", row.names = FALSE)
+write.xlsx(allmovrev, "3000MergedReviews.xlsx", row.names = FALSE)
+```

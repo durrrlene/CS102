@@ -10,6 +10,7 @@ library(dplyr)
 library(stringr)
 library(httr)
 library(rvest)
+library(xlsx)
 ```
 
 ```{r}
@@ -90,9 +91,9 @@ end - start # Total Elapsed Time
 
 ```{r}
 save(papers, file = "ComputerScience_articles.RData")
+write.xlsx(papers, "ComputerScience_articles.xlsx")
 write.csv(papers, file = "ComputerScience_articles.csv")
+
 ```
 
-```{r}
-View(papers)
-```
+

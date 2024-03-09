@@ -1,0 +1,91 @@
+---
+title: "movie(inputs1-10)"
+author: "Darlene Erl Lapso"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+library(DBI)
+library(RMariaDB)
+library(dplyr, dbplyr)
+```
+
+```{r}
+connection <- dbConnect(RMariaDB::MariaDB(),
+                        dsn = "arxiv-connection",
+                        Server = "localhost",
+                        dbname = "arxiv_10",
+                        user = "root"
+)
+```
+
+```{r}
+#tables
+dbListTables(connection)
+
+#fields
+dbListFields(connection, "articles")
+```
+
+```{r}
+queries <- c("INSERT INTO articles(num, Title, Author, Subject, Abstract, Meta)
+            VALUES ('', 'Seamless Human Motion Composition with Blended Positional Encodings', 'German Barquero, Sergio Escalera, Cristina Palmero', 'Computer Vision and Pattern Recognition (cs.CV)', 'Conditional human motion generation is an important topic with many applications in virtual reality, gaming, and robotics. While prior works have focused on generating motion guided by text, music, or scenes, these typically result in isolated motions confined to short durations. Instead, we address the generation of long, continuous sequences guided by a series of varying textual descriptions. In this context, we introduce FlowMDM, the first diffusion-based model that generates seamless Human Motion Compositions (HMC) without any postprocessing or redundant denoising steps. For this, we introduce the Blended Positional Encodings, a technique that leverages both absolute and relative positional encodings in the denoising chain. More specifically, global motion coherence is recovered at the absolute stage, whereas smooth and realistic transitions are built at the relative stage. As a result, we achieve state-of-the-art results in terms of accuracy, realism, and smoothness on the Babel and HumanML3D datasets. FlowMDM excels when trained with only a single description per motion sequence thanks to its Pose-Centric Cross-ATtention, which makes it robust against varying text descriptions at inference time. Finally, to address the limitations of existing HMC metrics, we propose two new metrics: the Peak Jerk and the Area Under the Jerk, to detect abrupt transitions.', 'Fri, 23 Feb 2024 18:59:40 UTC (15,139 KB)')", 
+             
+             "INSERT INTO articles(num, Title, Author, Subject, Abstract, Meta)
+            VALUES ('', 'AgentOhana: Design Unified Data and Training Pipeline for Effective Agent Learning', 'Jianguo Zhang, Tian Lan, Rithesh Murthy, Zhiwei Liu, Weiran Yao, Juntao Tan, Thai Hoang, Liangwei Yang, Yihao Feng, Zuxin Liu, Tulika Awalgaonkar, Juan Carlos Niebles, Silvio Savarese, Shelby Heinecke, Huan Wang, Caiming Xiong', 'Artificial Intelligence (cs.AI)', 'Autonomous agents powered by large language models (LLMs) have garnered significant research attention. However, fully harnessing the potential of LLMs for agent-based tasks presents inherent challenges due to the heterogeneous nature of diverse data sources featuring multi-turn trajectories. In this paper, we introduce AgentOhana as a comprehensive solution to address these challenges. AgentOhana aggregates agent trajectories from distinct environments, spanning a wide array of scenarios. It meticulously standardizes and unifies these trajectories into a consistent format, streamlining the creation of a generic data loader optimized for agent training. Leveraging the data unification, our training pipeline maintains equilibrium across different data sources and preserves independent randomness across devices during dataset partitioning and model training. Additionally, we present xLAM-v0.1, a large action model tailored for AI agents, which demonstrates exceptional performance across various benchmarks.', 'Fri, 23 Feb 2024 18:56:26 UTC (3,748 KB)')",
+             
+             "INSERT INTO articles(num, Title, Author, Subject, Abstract, Meta)
+            VALUES ('', 'Graph Partitioning With Limited Moves', 'Majid Behbahani, Mina Dalirrooyfard, Elaheh Fata, Yuriy Nevmyvaka', 'Data Structures and Algorithms (cs.DS)', 'In many real world networks, there already exists a (not necessarily optimal) k-partitioning of the network. Oftentimes, one aims to find a k-partitioning with a smaller cut value for such networks by moving only a few nodes across partitions. The number of nodes that can be moved across partitions is often a constraint forced by budgetary limitations. Motivated by such real-world applications, we introduce and study the r-move k-partitioning~problem, a natural variant of the Multiway cut problem. Given a graph, a set of k terminals and an initial partitioning of the graph, the r-move k-partitioning~problem aims to find a k-partitioning with the minimum-weighted cut among all the k-partitionings that can be obtained by moving at most r non-terminal nodes to partitions different from their initial ones. Our main result is a polynomial time 3(r+1) approximation algorithm for this problem. We further show that this problem is W[1]-hard, and give an FPTAS for when r
+            is a small constant.', 'Fri, 23 Feb 2024 18:25:54 UTC (757 KB)')",
+             
+             "INSERT INTO articles(num, Title, Author, Subject, Abstract, Meta)
+            VALUES ('', 'Co-Supervised Learning: Improving Weak-to-Strong Generalization with Hierarchical Mixture of Experts', 'Yuejiang Liu, Alexandre Alahi', 'Machine Learning (cs.LG)', 'Steering the behavior of a strong model pre-trained on internet-scale data can be difficult due to the scarcity of competent supervisors. Recent studies reveal that, despite supervisory noises, a strong student model may surpass its weak teacher when fine-tuned on specific objectives. Yet, the effectiveness of such weak-to-strong generalization remains limited, especially in the presence of large capability gaps. In this paper, we propose to address this challenge by harnessing a diverse set of specialized teachers, instead of a single generalist one, that collectively supervises the strong student. Our approach resembles the classical hierarchical mixture of experts, with two components tailored for co-supervision: (i) we progressively alternate student training and teacher assignment, leveraging the growth of the strong student to identify plausible supervisions; (ii) we conservatively enforce teacher-student and local-global consistency, leveraging their dependencies to reject potential annotation noises. We validate the proposed method through visual recognition tasks on the OpenAI weak-to-strong benchmark and additional multi-domain datasets. Our code is available at', 'Fri, 23 Feb 2024 18:56:11 UTC (1,854 KB)')",
+             
+             "INSERT INTO articles(num, Title, Author, Subject, Abstract, Meta)
+            VALUES ('', 'Gen4Gen: Generative Data Pipeline for Generative Multi-Concept Composition', 'Chun-Hsiao Yeh, Ta-Ying Cheng, He-Yen Hsieh, Chuan-En Lin, Yi Ma, Andrew Markham, Niki Trigoni, H.T. Kung, Yubei Chen', 'Computer Vision and Pattern Recognition (cs.CV)', 'Recent text-to-image diffusion models are able to learn and synthesize images containing novel, personalized concepts (e.g., their own pets or specific items) with just a few examples for training. This paper tackles two interconnected issues within this realm of personalizing text-to-image diffusion models. First, current personalization techniques fail to reliably extend to multiple concepts -- we hypothesize this to be due to the mismatch between complex scenes and simple text descriptions in the pre-training dataset (e.g., LAION). Second, given an image containing multiple personalized concepts, there lacks a holistic metric that evaluates performance on not just the degree of resemblance of personalized concepts, but also whether all concepts are present in the image and whether the image accurately reflects the overall text description. To address these issues, we introduce Gen4Gen, a semi-automated dataset creation pipeline utilizing generative models to combine personalized concepts into complex compositions along with text-descriptions. Using this, we create a dataset called MyCanvas, that can be used to benchmark the task of multi-concept personalization. In addition, we design a comprehensive metric comprising two scores (CP-CLIP and TI-CLIP) for better quantifying the performance of multi-concept, personalized text-to-image diffusion methods. We provide a simple baseline built on top of Custom Diffusion with empirical prompting strategies for future researchers to evaluate on MyCanvas. We show that by improving data quality and prompting strategies, we can significantly increase multi-concept personalized image generation quality, without requiring any modifications to model architecture or training algorithms.', 'Fri, 23 Feb 2024 18:55:09 UTC (24,656 KB)')",
+             
+             "INSERT INTO articles(num, Title, Author, Subject, Abstract, Meta)
+            VALUES ('', 'On the Complexity of Community-aware Network Sparsification', 'Emanuel Herrendorf, Christian Komusiewicz, Nils Morawietz, Frank Sommer', 'Data Structures and Algorithms (cs.DS)', 'Network sparsification is the task of reducing the number of edges of a given graph while preserving some crucial graph property. In community-aware network sparsification, the preserved property concerns the subgraphs that are induced by the communities of the graph which are given as vertex subsets. This is formalized in the Pi-Network Sparsification problem: given an edge-weighted graph G, a collection Z of c subsets of V(G) (communities), and two numbers ell, b, the question is whether there exists a spanning subgraph G of G with at most ell edges of total weight at most b such that G fulfills Pi for each community C. Here, we consider two graph properties Pi: the connectivity property (Connectivity NWS) and the property of having a spanning star (Stars NWS). Since both problems are NP-hard, we study their parameterized and fine-grained complexity. We provide a tight 2^{Omega(n^2+c)} poly(n+|Z|)-time running time lower bound based on the ETH for both problems, where n is the number of vertices in G. The lower bound holds even in the restricted case when all communities have size at most 4, G is a clique, and every edge has unit weight. For the connectivity property, the unit weight case with G being a clique is the well-studied problem of computing a hypergraph support with a minimum number of edges. We then study the complexity of both problems parameterized by the feedback edge number t of the solution graph G. For Stars NWS, we present an XP-algorithm for t. This answers an open question by Korach and Stern [Disc. Appl. Math. 08] who asked for the existence of polynomial-time algorithms for t=0. In contrast, we show for Connectivity NWS that known polynomial-time algorithms for t=0 [Korach and Stern, Math. Program. 03; Klemz et al., SWAT 14] cannot be extended by showing that Connectivity NWS is NP-hard for t=1.', 'Fri, 23 Feb 2024 18:32:39 UTC (165 KB)')",
+             
+             "INSERT INTO articles(num, Title, Author, Subject, Abstract, Meta)
+            VALUES ('', 'Mechanics-Informed Autoencoder Enables Automated Detection and Localization of Unforeseen Structural Damage', 'Xuyang Li, Hamed Bolandi, Mahdi Masmoudi, Talal Salem, Nizar Lajnef, Vishnu Naresh Boddeti', 'Machine Learning (cs.LG)', 'Structural health monitoring (SHM) is vital for ensuring the safety and longevity of structures like buildings and bridges. As the volume and scale of structures and the impact of their failure continue to grow, there is a dire need for SHM techniques that are scalable, inexpensive, operate passively without human intervention, and customized for each mechanical structure without the need for complex baseline models. We present a novel deploy-and-forget approach for automated detection and localization of damages in structures. It is based on a synergistic combination of fully passive measurements from inexpensive sensors and a mechanics-informed autoencoder. Once deployed, our solution continuously learns and adapts a bespoke baseline model for each structure, learning from its undamaged state response characteristics. After learning from just 3 hours of data, it can autonomously detect and localize different types of unforeseen damage. Results from numerical simulations and experiments indicate that incorporating the mechanical characteristics into the variational autoencoder allows for up to 35% earlier detection and localization of damage over a standard autoencoder. Our approach holds substantial promise for a significant reduction in human intervention and inspection costs and enables proactive and preventive maintenance strategies, thus extending the lifespan, reliability, and sustainability of civil infrastructures.', 'Fri, 23 Feb 2024 18:31:02 UTC (1,149 KB)')",
+             
+             "INSERT INTO articles(num, Title, Author, Subject, Abstract, Meta)
+            VALUES ('', 'API-BLEND: A Comprehensive Corpora for Training and Benchmarking API LLMs', 'Kinjal Basu, Ibrahim Abdelaziz, Subhajit Chaudhury, Soham Dan, Maxwell Crouse, Asim Munawar, Sadhana Kumaravel, Vinod Muthusamy, Pavan Kapanipathi, Luis A. Lastras', 'Computation and Language (cs.CL)', 'There is a growing need for Large Language Models (LLMs) to effectively use tools and external Application Programming Interfaces (APIs) to plan and complete tasks. As such, there is tremendous interest in methods that can acquire sufficient quantities of train and test data that involve calls to tools / APIs. Two lines of research have emerged as the predominant strategies for addressing this challenge. The first has focused on synthetic data generation techniques, while the second has involved curating task-adjacent datasets which can be transformed into API / Tool-based tasks. In this paper, we focus on the task of identifying, curating, and transforming existing datasets and, in turn, introduce API-BLEND, a large corpora for training and systematic testing of tool-augmented LLMs. The datasets mimic real-world scenarios involving API-tasks such as API / tool detection, slot filling, and sequencing of the detected APIs. We demonstrate the utility of the API-BLEND dataset for both training and benchmarking purposes.', 'Fri, 23 Feb 2024 18:30:49 UTC (1,148 KB)')",
+             
+             "INSERT INTO articles(num, Title, Author, Subject, Abstract, Meta)
+             VALUES ('', 'A Comprehensive Survey of Convolutions in Deep Learning: Applications, Challenges, and Future Trends', 'Abolfazl Younesi, Mohsen Ansari, MohammadAmin Fazli, Alireza Ejlali, Muhammad Shafique, Jörg Henkel', 'Machine Learning (cs.LG)', 'In todays digital age, Convolutional Neural Networks (CNNs), a subset of Deep Learning (DL), are widely used for various computer vision tasks such as image classification...', 'Fri, 23 Feb 2024 18:28:57 UTC (5,648 KB)')",
+             
+             "INSERT INTO articles(num, Title, Author, Subject, Abstract, Meta)
+             VALUES ('', 'RoboEXP: Action-Conditioned Scene Graph via Interactive Exploration for Robotic Manipulation', 'Hanxiao Jiang, Binghao Huang, Ruihai Wu, Zhuoran Li, Shubham Garg, Hooshang Nayyeri, Shenlong Wang, Yunzhu Li', 'Robotics (cs.RO)', 'Robots need to explore their surroundings to adapt to and tackle tasks in unknown environments. Prior work has proposed building scene graphs of the environment but typically assumes that the environment is static, omitting regions that require active interactions. This severely limits their ability to handle more complex tasks in household and office environments: before setting up a table, robots must explore drawers and cabinets to locate all utensils and condiments. In this work, we introduce the novel task of interactive scene exploration, wherein robots autonomously explore environments and produce an action-conditioned scene graph (ACSG) that captures the structure of the underlying environment. The ACSG accounts for both low-level information, such as geometry and semantics, and high-level information, such as the action-conditioned relationships between different entities in the scene. To this end, we present the Robotic Exploration (RoboEXP) system, which incorporates the Large Multimodal Model (LMM) and an explicit memory design to enhance our systems capabilities. The robot reasons about what and how to explore an object, accumulating new information through the interaction process and incrementally constructing the ACSG. We apply our system across various real-world settings in a zero-shot manner, demonstrating its effectiveness in exploring and modeling environments it has never seen before. Leveraging the constructed ACSG, we illustrate the effectiveness and efficiency of our RoboEXP system in facilitating a wide range of real-world manipulation tasks involving rigid, articulated objects, nested objects like Matryoshka dolls, and deformable objects like cloth.', 'Fri, 23 Feb 2024 18:27:17 UTC (23,855 KB)')")
+
+             
+```
+
+```{r}
+for (query in queries) {
+  #sending queries
+  query_result <- dbSendQuery(connection, query)
+  dbClearResult(query_result)
+}
+```
+
+
+```{r}
+articles_dta <- dbGetQuery(connection, "SELECT * FROM arxiv_10.articles")
+```
+
+```{r}
+glimpse(articles_dta)
+```
+
+```{r}
+write.csv(articles_dta, file = "arxiv_10")
+```
+
+```{r}
+dbDisconnect(connection)
+```

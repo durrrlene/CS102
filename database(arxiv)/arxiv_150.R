@@ -71,7 +71,7 @@ query <- "INSERT INTO arxiv(col, Title, Author, Subject, Abstract, Meta)
           'Loading and importing csv file using cmd and connect it to database/mysql.', 'March 9, 2023')"
 
 query_result <- dbSendQuery(connection, query)
-        
+
 dbClearResult(query_result)
 
 
@@ -115,4 +115,3 @@ arxiv_seeUp <- dbGetQuery(connection, "SELECT Title, Author, Subject, Meta FROM 
 write.csv(arxiv_updta, file = "arxiv_150.csv", row.names = FALSE)
 
 dbDisconnect(connection)
-  

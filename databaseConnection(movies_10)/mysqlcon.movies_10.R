@@ -1,0 +1,79 @@
+library(RMariaDB)
+library(dplyr, dbplyr)
+
+connection <- dbConnect(RMariaDB::MariaDB(),
+                        dsn = "movie-connection",
+                        Server = "localhost",
+                        dbname = "movie_10",
+                        user = "root"
+)
+
+
+#tables
+dbListTables(connection)
+
+
+#fields
+dbListFields(connection, "movies")
+
+
+queries <- c(
+  
+  "INSERT INTO movies(Title, Usernames, Date, Content) 
+             VALUES
+             ('TOY STORY', 'ametaphysicalshark', '2009-06-04', 'Afraid this doesnt really hold up that well. You hear so much about great wit, but that comes only in short fits, a few good lines here and there. I know theyre toys, but the characters in Toy Story largely suffer from the sort of super-quirk Juno and Little Miss Sunshine and the lot suffer from. Its basically really quirky toys talking to each other and facing acts of villainy and committing acts of heroism for an hour and a half. The animation is impressive considering when it was made but unlike hand-drawn animation from the old Disney films it HAS dated, and noticeably, often looking like a video game cutscene now. The voice work is fine, but theres just nothing truly interesting about this world or these characters. Its a pleasant enough movie and occasionally very fun, but the overwhelming affection for it seems to me the result of nostalgia and memory rather than any lasting value. Compared to the rip-roaring adventure of The Incredibles, the spine-tingling melancholy tone and sophisticated ideas of ALL-E, or the sense of longing and loss and adventure in Up, Toy Story falls short. Very short. In fact, Id much rather take the small-town nostalgia of Cars over this. A good starting point for Pixar but nothing even remotely approaching a classic.')",
+  
+  "INSERT INTO movies(Title, Usernames, Date, Content) 
+             VALUES
+             ('UP', 'Groverdox', '2021-09-20', 'I had high hopes for Up. I dont think it let me down. Maybe I let it down. I dont know.I think the secret to Pixars success is that they knew before anyone else that a great childrens movie is a great movie, full stop. You dont have to transparently attempt to please both children and adults: this was what was wrong with a lot of terrible family movies, like North. Adult humour seems stunningly out of place in a movie best enjoyed by children, and the truisms children might be hearing for the first time are often ones that adults can do with being reminded of.At least, thats what I always thought. Up starts very well, with an opening montage that makes everybodys list of saddest movie scenes. When the central premise of the flying house suspended by balloons is established, we realise the movie is off to a great start, but where it goes from there just isnt as interesting, and it lost me repeatedly.Maybe Ill watch it again later, now that I know what to expect, and hopefully Ill be able to replace this review with a more positive one.')",
+  
+  "INSERT INTO movies(Title, Usernames, Date, Content) 
+             VALUES
+             ('TOTORO', 'TheLittleSongbird', '2010-11-23', 'Carl Fredricksen (Ed Asner) as a young quiet kid idolized explorer Charles Muntz (Christopher Plummer) and his discovery of Paradise Falls. Ellie is much more animated and also a great fan of Muntz. Together they would marry and live their lives together until the day she dies. Now Carl is hounded by a property developer and forced to go to a retirement home. Instead he ties a sea of helium balloons to his home and float away to Paradise Falls. Wilderness Explorer scout Russell whos trying to get an Assisting the Elderly badge gets dragged along on the adventure.The first part of this movie is a real tear jerker. When Carl and Ellies lives flash through the years, all the heart breaks and all the love just jump off the screen. Then there is comedy as the journey to Paradise Falls starts. The movie gets very surreal with dog translators, and a very colorful bird. The villain is a bit too villainy. The story gets too serious at times. But it ends almost as emotionally as it starts. It is one of the best of Pixar.')",
+  
+  "INSERT INTO movies(Title, Usernames, Date, Content) 
+             VALUES
+             ('RATATOUILLE', 'tiohn', '1999-02-18', 'Very good story and inspiring adventure story, beautifully potrayed...You are never old to pursue your dreams.')",
+  
+  "INSERT INTO movies(Title, Usernames, Date, Content) 
+             VALUES
+             ('GRAVE OF THE FIREFLIES', 'karora', '2004-07-23', 'Out of the Pixar films, this one is a bit of an oddball. It features an elderly man and a boy scout travelling to Venezuela via flying house. It is definitely not the usual style of their films, but they make it work through engaging action and comedy.')",
+  
+  "INSERT INTO movies(Title, Usernames, Date, Content) 
+             VALUES
+             ('TANGLED', 'Mr-Fusion', '2015-02-18', 'As recent Disney movies go, Tangled is largely forgettable stuff. It looks like your typical CGI kids movie, and theres not a lot to these characters or the story.But my kid loves it, so they must be doing something right. She usually gets a kick out of Flynn Riders antics - particularly the smoldering scene and when he gets a frying pan over the head and stashed in a wardrobe. Which brings us to the movies real charm: Zachary Levi, who makes Rider a likable guy and infuses this movie with much-needed personality. The guys just plain charming, and his contribution to this movie cannot be understated.5/10')",
+  
+  "INSERT INTO movies(Title, Usernames, Date, Content) 
+             VALUES
+             ('INSIDE OUT', 'lidster_ma', '2019-05-06', 'I love Pixar films and was eagerly anticipating the release and viewing of inside out after all the rave reviews. How disappointed were both myself and my girlfriend. For first time ever in our lives we walked out of a cinema part way through a film. What a load of psychobabble drivel! The concept had potential but boy did they ruin it in their delivery. Firstly no way could could non Mensa affiliated kids be expected to understand the language inside the head. Secondly no sane adult would buy the lack of emotions on offer to control a humans psyche and the crude attempts to convey personal and interpersonal interactions. But putting all of that aside it was just plain boring. Please please do not put yourselves or your children through this pointless unentertaining experience.')",
+  
+  "INSERT INTO movies(Title, Usernames, Date, Content) 
+             VALUES
+             ('SPIRITED AWAY', 'jonathanbrown-25137', '2022-04-04', 'If Pixar - as a studio - has any weakness, its that they have no idea how to make a bad film. Again and again they release entertaining movies with not only a terrific sense of humor, but a level of storytelling that has set a standard for todays films, animated or otherwise. While I was obviously extremely excited to see Up, never did I expect it - or, to be honest. Well, I have to say that I was pleasantly surprised. Simply put, Up is a perfect movie.This movie is freakin hilarious. Without a doubt the funniest film that Pixar has ever made, each and every character in Up provides their own bit of humor. Dug the dog (voiced by co-director Bob Peterson) is especially hilarious every single time that he opens his mouth I love Up. Go see it now.')",
+  
+  "INSERT INTO movies(Title, Usernames, Date, Content) 
+             VALUES
+             ('PRINCESS MONONOKE', 'EliStutter', '2021-11-20', 'Best studio ghibli film! Its a bit violent but I love the idea and the fantasy and cool creatures! The characters are epic and brave and the music is just amazing!! I like her mask and the wolves are epic and scary in a great way.')"
+)
+
+
+
+
+#sending queries
+for (query in queries) {
+  #sending queries
+  query_result <- dbSendQuery(connection, query)
+  dbClearResult(query_result)
+}
+
+
+
+movies_dta <- dbGetQuery(connection, "SELECT * FROM movie_10.movies")
+
+glimpse(movies_dta)
+
+
+write.csv(movies_dta, file = "movies_10.csv")
+
+
+dbDisconnect(connection)

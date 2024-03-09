@@ -1,0 +1,91 @@
+---
+title: "MySQLcon"
+author: "Darlene Erl Lapso"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+library(RMariaDB)
+library(dplyr)
+library(dbplyr)
+```
+
+
+
+```{r}
+#method for loading csv file to database>>>
+# I created a table 'arxiv' and loaded the csv using command prompt by
+# LOAD DATA LOCAL INFILE 'C:/xampp/mysql/data/arxiv_150/arxiv_articles.csv'  INTO TABLE arxiv FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 ROWS;
+
+connection <- dbConnect(RMariaDB::MariaDB(),
+                        dsn = "arxiv-connection",
+                        Server = "localhost",
+                        dbname = "arxiv_150",
+                        user = "root"
+                        )
+```
+
+```{r}
+#shows tables
+dbListTables(connection)
+```
+
+```{r}
+#shows fields
+dbListFields(connection, "arxiv")
+```
+
+```{r}
+#showing all data
+arxiv_dta <- dbGetQuery(connection, "SELECT * FROM arxiv_150.arxiv")
+
+#seek
+glimpse(arxiv_dta)
+```
+
+```{r}
+#selected fields of table
+arxiv_sel <- dbGetQuery(connection, "SELECT Title, Abstract FROM arxiv_150.arxiv")
+arxiv_sel[c(1,2),]
+arxiv_sel[c(4,2),]
+```
+
+```{r}
+#getting all data using SELECT * FROM
+sqlQuery <- "SELECT Author, Meta FROM arxiv_150.arxiv"
+as_tibble(dbGetQuery(connection, sqlQuery))
+```
+
+```{r}
+#inserting a data 
+query <- "INSERT INTO arxiv(col, Title, Author, Subject, Abstract, Meta) 
+          VALUES ('', 'Database-arxiv', 'Darlene Lapso', 'R-Databases Integration', 
+          'Loading and importing csv file using cmd and connect it to database/mysql.', 'March 9, 2023')"
+
+query_result <- dbSendQuery(connection, query)
+        
+dbClearResult(query_result)
+```
+
+```{r}
+arxiv_updta <- dbGetQuery(connection, 'SELECT * FROM
+                          arxiv_150.arxiv')
+#the inserted data has been multipled since I entered it multiple times.:(
+```
+
+```{r}
+arxiv_seeUp <- dbGetQuery(connection, "SELECT Title, Author, Subject, Meta FROM arxiv_150.arxiv")
+(arxiv_seeUp <- tail(arxiv_seeUp, n = 5)) #checking the updated data
+```
+
+```{r}
+#saving file as csv
+write.csv(arxiv_updta, file = "arxiv_150.csv", row.names = FALSE)
+```
+
+```{r}
+dbDisconnect(connection)
+```
+
+

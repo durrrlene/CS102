@@ -30,9 +30,9 @@ cformat_dates_char <- format(cformat_dates, "%b-%d-%Y")
 
 
 #removing the UTC and PST(timezone information)
-formatted_dates <- gsub("UTC|PST", "", cformat_dates_char)
+deets$Date <- gsub("UTC|PST", "", cformat_dates_char)
 
-formatted_dates
+View(deets)
 
 #removing the UTC and PST allows me to correct the format of the date to M-D-Y,
 #while it still has I encounter problem converting those to new format.
@@ -40,8 +40,10 @@ formatted_dates
 
 
 #clean the reviews to lower cases
+deets$Usernames <- tolower(deets$Usernames)
+deets$Content <- tolower(deets$Content)
 
-
+View(deets)
 
 
 

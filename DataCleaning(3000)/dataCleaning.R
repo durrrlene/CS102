@@ -18,6 +18,19 @@ sum(is.na(deets))
 
 
 #change format of date
+cformat_dates <- dmy(deets$Date)
+posix_dates <- as.POSIXct(cformat_dates, format = "%m-%d-%Y", tz = "")
+
+#removing the UTC and PST(timezone information)
+formatted_dates <- format(posix_dates, "%m-%d-%Y")
+formatted_dates
+
+#removing the UTC and PST allows me to correct the format of the date to M-D-Y,
+#while it still has I encounter problem converting those to new format.
+
+
+
+
 
 
 
